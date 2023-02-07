@@ -1,17 +1,20 @@
 package org.example;
 
-import org.example.loader.AnnotationLoader;
-import org.example.loader.QueryBus;
+import org.example.bus.CommandBus;
+import org.example.bus.QueryBus;
+import org.example.commands.TestCommand;
 import org.example.queries.TestQuery;
 
 public class Main {
     public static void main(String[] args) {
-        AnnotationLoader loader = new AnnotationLoader();
-        loader.load();
+        QueryBus qbus = new QueryBus();
+        qbus.load();
 
-        QueryBus bus = new QueryBus();
-        bus.setLoader(loader);
+        CommandBus cbus = new CommandBus();
+        cbus.load();
 
-        bus.execute(new TestQuery().getClass());
+        cbus.execute(new TestCommand(12));
+
+        qbus.execute(new TestQuery("Marco"));
     }
 }

@@ -7,7 +7,6 @@ import org.example.interfaces.IQueryHandler;
 public class TestHandler implements IQueryHandler<TestQuery> {
     @Override
     public void execute(TestQuery arg) {
-//        System.out.println(arg.age);
-        System.out.println("Funcionou");
+        System.out.println(arg.testProp);
     }
 }
