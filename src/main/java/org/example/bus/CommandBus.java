@@ -34,17 +34,17 @@ public class CommandBus {
                         instance
                 ));
             } catch (ClassNotFoundException e) {
-                System.out.println("Error to load query handler");
+                System.out.println("Error to load command handler");
                 System.out.println(e);
             }
         }
     }
 
-    public void execute(Object query) {
+    public void execute(Object command) {
         Optional<HandlerList> optional =
                 this.handlers.stream().filter(
                         (element) -> {
-                            return element.caller.getName() == query.getClass().getName();
+                            return element.caller.getName() == command.getClass().getName();
                         }
                 ).findFirst();
 
@@ -54,7 +54,7 @@ public class CommandBus {
             try {
                 var instance = clazz.handler.getDeclaredConstructor().newInstance();
                 Method method = instance.getClass().getDeclaredMethod("execute", clazz.caller);
-                method.invoke(instance, query);
+                method.invoke(instance, command);
             } catch (InstantiationException e) {
                 throw new RuntimeException(e);
             } catch (IllegalAccessException e) {
@@ -65,7 +65,7 @@ public class CommandBus {
                 throw new RuntimeException(e);
             }
         } else {
-            System.out.println("Query not found");
+            System.out.println("Command not found");
         }
     }
 }
